@@ -77,10 +77,19 @@ elec <- df[,c(3, 4, 1, 5, 8, 9, 11)]
 colnames(elec) <- c("County.Number", "FIPS", "State", "County",
                     "Reporting.Precintcs", "Total.Precincts",
                     "Total.Votes")
+elec$County.Number <- sprintf("%05d", elec$County.Number)
+elec$FIPS <- sprintf("%05d", elec$FIPS)
 elec$Total.Votes <- elec$Total.Votes
 elec$Obama.Votes <- as.integer(obama)
 elec$Romney.Votes <- as.integer(romny)
 elec$Other.Votes <- as.integer(other)
+
+# Remove states that don't align with the census data
+elec <- elec[!(elec$State %in% c("AK", "CT", "HI", "MA",
+               "ME", "NH", "RI", "VT")),]
+
+# Remove state level data
+elec <- elec[elec$FIPS != "00000",]
 
 # Save final dataset
 save(elec, file = "C:/Users/kylev/OneDrive/School/Spring17/Stats/project/pres-project/data/elec.Rda")
