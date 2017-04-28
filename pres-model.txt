@@ -1,0 +1,18 @@
+model
+{
+  for(i in 1:n.counties) {
+    Y[i] ~ dnorm(theta[i], tau2)
+    theta[i] <- alpha[State[i]] + beta[1] + beta[2]*Female[i] +
+      beta[3]*l.Total.Population[i] + beta[4]*White[i] +
+      beta[5]*College[i] + beta[6]*Poverty[i] +
+      beta[7]*No.Vehicles[i]
+  }
+  for(j in 1:n.states) {
+    alpha[j] ~ dnorm(0.0, tau2_alpha)
+  }
+  for(k in 1:p.counties) {
+    beta[k] ~ dnorm(0.0, 0.001)
+  }
+  tau2 ~ dgamma(.01, .01)
+  tau2_alpha ~ dgamma(.01, .01)
+}
